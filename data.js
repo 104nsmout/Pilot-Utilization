@@ -19,7 +19,7 @@
   // need: 'member' (board) or 'admin' (upload page).
   async function gate(root, need, onReady) {
     if (!sb) {
-      root.innerHTML = '<div class="center-msg card"><h1>Almost there</h1><p class="msg">Add your Supabase address and public key to <b>js/config.js</b>, then reload. The setup guide (README) walks through it.</p></div>';
+      root.innerHTML = '<div class="center-msg card"><h1>Almost there</h1><p class="msg">Add your Supabase address and public key to <b>config.js</b>, then reload. The setup guide (README) walks through it.</p></div>';
       return;
     }
     var res = await sb.auth.getSession();

@@ -15,12 +15,12 @@ Airplane Manager ──CSV──▶ admin.html (upload page) ──▶ Supabase 
 |---|---|
 | `index.html` + `js/board.js` | The board. Reads data, counts days, draws everything. |
 | `admin.html` + `js/admin.js` | Upload page and roster editor. Admins only. |
-| `js/importer.js` | Turns the exports into one row per pilot per day. No network; testable on its own. |
+| `importer.js` | Turns the exports into one row per pilot per day. No network; testable on its own. |
 | `js/data.js` | Sign-in and data loading, shared by both pages. |
-| `js/config.js` | Your Supabase address and public key. The only file you must edit. |
+| `config.js` | Your Supabase address and public key. The only file you must edit. |
 | `css/style.css` | Look and feel, light and dark. |
-| `supabase/schema.sql` | Creates the tables, access rules and upload function. |
-| `supabase/seed.sql` | Starting roster (bases from the October pivot) and who can log in. |
+| `schema.sql` | Creates the tables, access rules and upload function. |
+| `seed.sql` | Starting roster (bases from the October pivot) and who can log in. |
 | `test/run-importer.js` | Runs the importer on real exports from the command line (optional). |
 
 There is no build step. Vercel serves these files exactly as they are, the same
@@ -32,13 +32,13 @@ way your fuel app works.
 
 ### 1. Create the database (Supabase)
 1. Go to supabase.com → **New project**. Name it `crew-workload`. Save the database password somewhere safe.
-2. When it finishes, open **SQL Editor → New query**. Paste all of `supabase/schema.sql` and press **Run**. You should see "Success".
-3. Open `supabase/seed.sql`. Replace `YOUR-EMAIL@example.com` with your email and `GREG-EMAIL@example.com` with Greg's. Paste it into a new query and **Run**.
+2. When it finishes, open **SQL Editor → New query**. Paste all of `schema.sql` and press **Run**. You should see "Success".
+3. Open `seed.sql`. Replace `YOUR-EMAIL@example.com` with your email and `GREG-EMAIL@example.com` with Greg's. Paste it into a new query and **Run**.
    - Need more viewers later? Run: `insert into app_users (email, role) values ('name@company.com', 'viewer');`
 4. Go to **Project Settings → API**. Copy the **Project URL** and the **anon public** key.
 
 ### 2. Point the app at it
-Open `js/config.js` and paste those two values in place of the placeholders.
+Open `config.js` and paste those two values in place of the placeholders.
 Never paste the **service_role** key anywhere in this project.
 
 ### 3. Put the code on GitHub
@@ -105,7 +105,7 @@ first one in this list wins:
 
 - **Duty days** = Flying + Training + Travel + Office + Standby + Layover.
 - **Layover** is *inferred*: days between two of a pilot's legs on the same trip.
-  Gaps longer than 4 days are treated as the pilot going home (`maxLayoverGap` in `js/importer.js`).
+  Gaps longer than 4 days are treated as the pilot going home (`maxLayoverGap` in `importer.js`).
 - **Fleet average** is the average across pilots with **On board** checked.
 - **Data through** is the last day of your latest flight upload, so days you
   haven't uploaded yet never look like days off.
@@ -114,7 +114,7 @@ Known limits:
 - Airplane Manager's own "days worked" (Crew Schedule Summary) can differ by a
   day or two, mainly where a pilot went home in the middle of a multi-day trip.
 - Schedule types the page doesn't recognize are saved as **Other** (not duty), and
-  the upload page lists them. Add them to `TYPE_MAP` in `js/importer.js`.
+  the upload page lists them. Add them to `TYPE_MAP` in `importer.js`.
 
 ## Roster
 
